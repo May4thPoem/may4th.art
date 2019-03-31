@@ -20,14 +20,15 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      bordered
-      content-class="bg-grey-2"
-    >
+    <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
       <q-list>
         <q-item-label header>Essential Links</q-item-label>
-        <q-item clickable tag="a" target="_blank" href="http://v1.quasar-framework.org">
+        <q-item
+          clickable
+          tag="a"
+          target="_blank"
+          href="http://v1.quasar-framework.org"
+        >
           <q-item-section avatar>
             <q-icon name="school" />
           </q-item-section>
@@ -36,7 +37,12 @@
             <q-item-label caption>v1.quasar-framework.org</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://github.com/quasarframework/">
+        <q-item
+          clickable
+          tag="a"
+          target="_blank"
+          href="https://github.com/quasarframework/"
+        >
           <q-item-section avatar>
             <q-icon name="code" />
           </q-item-section>
@@ -45,7 +51,12 @@
             <q-item-label caption>github.com/quasarframework</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="http://chat.quasar-framework.org">
+        <q-item
+          clickable
+          tag="a"
+          target="_blank"
+          href="http://chat.quasar-framework.org"
+        >
           <q-item-section avatar>
             <q-icon name="chat" />
           </q-item-section>
@@ -54,7 +65,12 @@
             <q-item-label caption>chat.quasar-framework.org</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://forum.quasar-framework.org">
+        <q-item
+          clickable
+          tag="a"
+          target="_blank"
+          href="https://forum.quasar-framework.org"
+        >
           <q-item-section avatar>
             <q-icon name="record_voice_over" />
           </q-item-section>
@@ -63,7 +79,12 @@
             <q-item-label caption>forum.quasar-framework.org</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://twitter.com/quasarframework">
+        <q-item
+          clickable
+          tag="a"
+          target="_blank"
+          href="https://twitter.com/quasarframework"
+        >
           <q-item-section avatar>
             <q-icon name="rss_feed" />
           </q-item-section>
@@ -82,20 +103,19 @@
 </template>
 
 <script>
-import { openURL } from 'quasar'
+import {openURL} from 'quasar'
 
 export default {
   name: 'MyLayout',
-  data () {
+  data() {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      leftDrawerOpen: this.$q.platform.is.desktop,
     }
   },
   methods: {
-    openURL
-  }
+    openURL,
+  },
 }
 </script>
 
-<style>
-</style>
+<style></style>
