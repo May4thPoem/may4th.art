@@ -1,13 +1,26 @@
 <template>
-  <q-page class="flex flex-center">
-    <img alt="Quasar logo" src="~assets/quasar-logo-full.svg" />
+  <q-page class="flex flex-center" @click="handleClick">
+    <div ref="hello">Hello</div>
   </q-page>
 </template>
 
 <style></style>
 
 <script>
+import {TweenMax} from 'gsap/TweenMax'
+
 export default {
   name: 'PageIndex',
+  methods: {
+    handleClick() {
+      const hello = this.$refs.hello
+      const interval = setInterval(() => {
+        TweenMax.to(hello, 0.5, {x: '+=100', y: '+=100'})
+      }, 500)
+      setTimeout(() => {
+        clearInterval(interval)
+      }, 2000)
+    },
+  },
 }
 </script>

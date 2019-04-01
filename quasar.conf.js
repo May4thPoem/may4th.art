@@ -23,6 +23,7 @@ module.exports = function(ctx) {
       components: [
         'QLayout',
         'QHeader',
+        'QFooter',
         'QDrawer',
         'QPageContainer',
         'QPage',
@@ -65,7 +66,7 @@ module.exports = function(ctx) {
     },
 
     devServer: {
-      https: true,
+      // https: true,
       port: 5454,
       open: true, // opens browser window automatically
     },
@@ -119,7 +120,7 @@ module.exports = function(ctx) {
     },
 
     cordova: {
-      // id: 'org.cordova.quasar.app'
+      id: 'art.may4th.app',
     },
 
     electron: {

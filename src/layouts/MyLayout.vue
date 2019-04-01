@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated class="glossy">
+    <q-header elevated>
       <q-toolbar>
         <q-btn
           flat
@@ -8,15 +8,21 @@
           round
           @click="leftDrawerOpen = !leftDrawerOpen"
           aria-label="Menu"
+          v-if="!$q.platform.is.desktop"
         >
           <q-icon name="menu" />
         </q-btn>
 
         <q-toolbar-title>
-          Quasar App
+          May4th Poem
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-btn flat v-if="!isLoggedIn" @click="logIn">
+          登录
+        </q-btn>
+        <q-btn flat v-else @click="logOut">
+          退出
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -99,20 +105,39 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-footer>
+      <q-toolbar style="justify-content: center;">
+        <div>洗心革面的未来生活 | May4th Poem © 2019</div>
+      </q-toolbar>
+    </q-footer>
   </q-layout>
 </template>
 
 <script>
 import {openURL} from 'quasar'
+import {LOG_IN, LOG_OUT} from '../common/mutation-types.js'
 
 export default {
   name: 'MyLayout',
   data() {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop,
+      // leftDrawerOpen: this.$q.platform.is.desktop,
+      leftDrawerOpen: false,
     }
   },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.user.isLoggedIn
+    },
+  },
   methods: {
+    logIn() {
+      this.$store.commit(LOG_IN)
+    },
+    logOut() {
+      this.$store.commit(LOG_OUT)
+    },
     openURL,
   },
 }
