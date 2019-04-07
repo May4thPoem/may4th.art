@@ -1,6 +1,6 @@
 <template>
-  <q-page class="flex flex-center" @click="handleClick">
-    <div ref="hello">Hello</div>
+  <q-page class="flex flex-center">
+    <div ref="hello" @click="handleClick">Hello</div>
   </q-page>
 </template>
 
