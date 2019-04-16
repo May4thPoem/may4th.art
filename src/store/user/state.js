@@ -1,4 +1,6 @@
 export default {
   isLoggedIn: false,
-  userName: '',
+  token: undefined,
+  id: undefined,
+  name: undefined,
 }

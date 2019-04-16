@@ -115,6 +115,7 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import {openURL} from 'quasar'
 import {LOG_IN, LOG_OUT} from '../common/mutation-types.js'
 
@@ -133,7 +134,24 @@ export default {
   },
   methods: {
     logIn() {
-      this.$store.commit(LOG_IN)
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation {
+              logIn(email: "aaa@123.com", password: "12345678") {
+                token
+                user {
+                  id
+                  name
+                }
+              }
+            }
+          `,
+        })
+        .then(res => {
+          this.$store.commit(LOG_IN, res.data.logIn)
+        })
+        .catch(err => console.log(err))
     },
     logOut() {
       this.$store.commit(LOG_OUT)

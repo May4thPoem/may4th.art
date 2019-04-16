@@ -1,6 +1,7 @@
 <template>
   <q-page class="flex flex-center">
-    <div ref="hello" @click="handleClick">Hello</div>
+    <!-- <div ref="hello" @click="handleClick">Hello</div> -->
+    <example-graphql />
   </q-page>
 </template>
 
@@ -8,9 +9,11 @@
 
 <script>
 import {TweenMax} from 'gsap/TweenMax'
+import ExampleGraphql from 'src/components/ExampleGraphql.vue'
 
 export default {
   name: 'PageIndex',
+  components: {ExampleGraphql},
   methods: {
     handleClick() {
       const hello = this.$refs.hello
