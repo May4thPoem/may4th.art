@@ -36,7 +36,10 @@ module.exports = function(ctx) {
         'QItemSection',
         'QItemLabel',
         'QPopupEdit',
+        'QPopupProxy',
         'QInput',
+        'QMenu',
+        'QDialog',
       ],
 
       directives: ['Ripple'],

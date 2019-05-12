@@ -20,92 +20,108 @@
         <div v-if="!isLoggedIn">
           <q-btn flat>
             登录
-            <q-popup-edit>
-              <div class="row items-center">
-                <div class="col-3">用户名</div>
-                <div class="col-9">
-                  <q-input dense autofocus v-model="newUserName" />
+            <q-popup-proxy>
+              <div class="col" style="padding: 10px;">
+                <div class="row items-center">
+                  <div class="col-3">用户名</div>
+                  <div class="col-9">
+                    <q-input dense autofocus v-model="userName" />
+                  </div>
                 </div>
-              </div>
-              <div class="row items-center">
-                <div class="col-3">密码</div>
-                <div class="col-9">
-                  <q-input
-                    dense
-                    autofocus
-                    v-model="newUserPassword"
-                    :type="showPassword ? 'text' : 'password'"
+                <div class="row items-center">
+                  <div class="col-3">密码</div>
+                  <div class="col-9">
+                    <q-input
+                      dense
+                      autofocus
+                      v-model="userPassword"
+                      :type="showPassword ? 'text' : 'password'"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          :name="showPassword ? 'visibility_off' : 'visibility'"
+                          class="cursor-pointer"
+                          @click="showPassword = !showPassword"
+                        />
+                      </template>
+                    </q-input>
+                  </div>
+                </div>
+                <div class="row justify-center" style="padding-top: 10px;">
+                  <q-btn
+                    color="primary"
+                    :disable="!validateLogIn"
+                    @click="logIn"
+                    >登录</q-btn
                   >
-                    <template v-slot:append>
-                      <q-icon
-                        :name="showPassword ? 'visibility_off' : 'visibility'"
-                        class="cursor-pointer"
-                        @click="showPassword = !showPassword"
-                      />
-                    </template>
-                  </q-input>
                 </div>
               </div>
-              <div class="row justify-center" style="padding-top: 10px;">
-                <q-btn color="primary" @click="logIn">登陆</q-btn>
-              </div>
-            </q-popup-edit>
+            </q-popup-proxy>
           </q-btn>
           <q-btn flat>
             注册
-            <q-popup-edit>
-              <div class="row items-center">
-                <div class="col-3">用户名</div>
-                <div class="col-9">
-                  <q-input
-                    dense
-                    autofocus
-                    v-model="newUserName"
-                    :rules="[
-                      val => val.length <= 16 || '用户名长度不能超过16个字符',
-                    ]"
-                  />
+            <q-popup-proxy>
+              <div class="col" style="padding: 10px;">
+                <div class="row items-center">
+                  <div class="col-3">用户名</div>
+                  <div class="col-9">
+                    <q-input
+                      dense
+                      autofocus
+                      v-model="newUserName"
+                      :rules="[
+                        val => val.length <= 16 || '用户名长度不能超过16个字符',
+                      ]"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div class="row items-center">
-                <div class="col-3">密码</div>
-                <div class="col-9">
-                  <q-input
-                    dense
-                    autofocus
-                    v-model="newUserPassword"
-                    :type="showPassword ? 'text' : 'password'"
-                    :rules="[val => val.length >= 8 || '密码不能少于8位']"
+                <div class="row items-center">
+                  <div class="col-3">密码</div>
+                  <div class="col-9">
+                    <q-input
+                      dense
+                      autofocus
+                      v-model="newUserPassword"
+                      :type="showPassword ? 'text' : 'password'"
+                      :rules="[
+                        val => !val || val.length >= 8 || '密码不能少于8位',
+                      ]"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          :name="showPassword ? 'visibility_off' : 'visibility'"
+                          class="cursor-pointer"
+                          @click="showPassword = !showPassword"
+                        />
+                      </template>
+                    </q-input>
+                  </div>
+                </div>
+                <div class="row items-center">
+                  <div class="col-3">确认</div>
+                  <div class="col-9">
+                    <q-input
+                      dense
+                      autofocus
+                      v-model="newUserPasswordConfirmation"
+                      :type="showPassword ? 'text' : 'password'"
+                      :rules="[
+                        val =>
+                          val === this.newUserPassword || '两次输入密码不一致',
+                      ]"
+                    />
+                  </div>
+                </div>
+                <div class="row justify-center" style="padding-top: 10px;">
+                  <q-btn
+                    color="primary"
+                    :disable="!validateSignUp"
+                    @click="logIn"
+                    >注册</q-btn
                   >
-                    <template v-slot:append>
-                      <q-icon
-                        :name="showPassword ? 'visibility_off' : 'visibility'"
-                        class="cursor-pointer"
-                        @click="showPassword = !showPassword"
-                      />
-                    </template>
-                  </q-input>
                 </div>
               </div>
-              <div class="row items-center">
-                <div class="col-3">确认</div>
-                <div class="col-9">
-                  <q-input
-                    dense
-                    autofocus
-                    v-model="newUserPasswordConfirmation"
-                    :type="showPassword ? 'text' : 'password'"
-                    :rules="[
-                      val =>
-                        val === this.newUserPassword || '两次输入密码不一致',
-                    ]"
-                  />
-                </div>
-              </div>
-              <div class="row justify-center" style="padding-top: 10px;">
-                <q-btn color="primary" @click="logIn">注册</q-btn>
-              </div>
-            </q-popup-edit>
+            </q-popup-proxy>
           </q-btn>
         </div>
         <q-btn flat v-else @click="logOut">
@@ -204,7 +220,6 @@
 
 <script>
 import gql from 'graphql-tag'
-import {openURL} from 'quasar'
 import {LOG_IN, LOG_OUT} from '../common/mutation-types.js'
 
 export default {
@@ -213,6 +228,8 @@ export default {
     return {
       // leftDrawerOpen: this.$q.platform.is.desktop,
       leftDrawerOpen: false,
+      userName: '',
+      userPassword: '',
       newUserName: '',
       newUserPassword: '',
       newUserPasswordConfirmation: '',
@@ -222,6 +239,19 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.state.user.isLoggedIn
+    },
+    validateLogIn() {
+      if (this.userName !== '' && this.userPassword !== '') return true
+      else return false
+    },
+    validateSignUp() {
+      if (
+        this.newUserName !== '' &&
+        this.newUserPassword !== '' &&
+        this.newUserPasswordConfirmation === this.newUserPassword
+      )
+        return true
+      else return false
     },
   },
   methods: {
@@ -248,7 +278,6 @@ export default {
     logOut() {
       this.$store.commit(LOG_OUT)
     },
-    openURL,
   },
 }
 </script>
