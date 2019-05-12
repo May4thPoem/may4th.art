@@ -35,6 +35,8 @@ module.exports = function(ctx) {
         'QItem',
         'QItemSection',
         'QItemLabel',
+        'QPopupEdit',
+        'QInput',
       ],
 
       directives: ['Ripple'],

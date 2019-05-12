@@ -17,9 +17,97 @@
           May4th Poem
         </q-toolbar-title>
 
-        <q-btn flat v-if="!isLoggedIn" @click="logIn">
-          登录
-        </q-btn>
+        <div v-if="!isLoggedIn">
+          <q-btn flat>
+            登录
+            <q-popup-edit>
+              <div class="row items-center">
+                <div class="col-3">用户名</div>
+                <div class="col-9">
+                  <q-input dense autofocus v-model="newUserName" />
+                </div>
+              </div>
+              <div class="row items-center">
+                <div class="col-3">密码</div>
+                <div class="col-9">
+                  <q-input
+                    dense
+                    autofocus
+                    v-model="newUserPassword"
+                    :type="showPassword ? 'text' : 'password'"
+                  >
+                    <template v-slot:append>
+                      <q-icon
+                        :name="showPassword ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="showPassword = !showPassword"
+                      />
+                    </template>
+                  </q-input>
+                </div>
+              </div>
+              <div class="row justify-center" style="padding-top: 10px;">
+                <q-btn color="primary" @click="logIn">登陆</q-btn>
+              </div>
+            </q-popup-edit>
+          </q-btn>
+          <q-btn flat>
+            注册
+            <q-popup-edit>
+              <div class="row items-center">
+                <div class="col-3">用户名</div>
+                <div class="col-9">
+                  <q-input
+                    dense
+                    autofocus
+                    v-model="newUserName"
+                    :rules="[
+                      val => val.length <= 16 || '用户名长度不能超过16个字符',
+                    ]"
+                  />
+                </div>
+              </div>
+              <div class="row items-center">
+                <div class="col-3">密码</div>
+                <div class="col-9">
+                  <q-input
+                    dense
+                    autofocus
+                    v-model="newUserPassword"
+                    :type="showPassword ? 'text' : 'password'"
+                    :rules="[val => val.length >= 8 || '密码不能少于8位']"
+                  >
+                    <template v-slot:append>
+                      <q-icon
+                        :name="showPassword ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="showPassword = !showPassword"
+                      />
+                    </template>
+                  </q-input>
+                </div>
+              </div>
+              <div class="row items-center">
+                <div class="col-3">确认</div>
+                <div class="col-9">
+                  <q-input
+                    dense
+                    autofocus
+                    v-model="newUserPasswordConfirmation"
+                    :type="showPassword ? 'text' : 'password'"
+                    :rules="[
+                      val =>
+                        val === this.newUserPassword || '两次输入密码不一致',
+                    ]"
+                  />
+                </div>
+              </div>
+              <div class="row justify-center" style="padding-top: 10px;">
+                <q-btn color="primary" @click="logIn">注册</q-btn>
+              </div>
+            </q-popup-edit>
+          </q-btn>
+        </div>
         <q-btn flat v-else @click="logOut">
           退出
         </q-btn>
@@ -125,6 +213,10 @@ export default {
     return {
       // leftDrawerOpen: this.$q.platform.is.desktop,
       leftDrawerOpen: false,
+      newUserName: '',
+      newUserPassword: '',
+      newUserPasswordConfirmation: '',
+      showPassword: false,
     }
   },
   computed: {
