@@ -40,6 +40,7 @@ module.exports = function(ctx) {
         'QInput',
         'QMenu',
         'QDialog',
+        'QBanner',
       ],
 
       directives: ['Ripple'],

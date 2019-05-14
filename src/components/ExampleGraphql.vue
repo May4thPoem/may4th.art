@@ -2,8 +2,9 @@
   <div>
     <div v-for="(poem, index) in poems" :key="index">
       <h3>{{ poem.title }}</h3>
+      <h4>Author: {{ poem.author.name }}</h4>
       <h4>{{ poem.content }}</h4>
-      <h4>{{ relativeTime(poem.createdAt) }}</h4>
+      <h6>{{ relativeTime(poem.createdAt) }}</h6>
     </div>
   </div>
 </template>
@@ -19,6 +20,9 @@ export default {
         return gql`
           query {
             poems {
+              author {
+                name
+              }
               title
               content
               createdAt

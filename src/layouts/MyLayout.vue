@@ -23,9 +23,15 @@
             <q-popup-proxy>
               <div class="col" style="padding: 10px;">
                 <div class="row items-center">
-                  <div class="col-3">用户名</div>
+                  <div class="col-3">邮箱</div>
                   <div class="col-9">
-                    <q-input dense autofocus v-model="userName" />
+                    <q-input
+                      dense
+                      autofocus
+                      v-model="userEmail"
+                      type="email"
+                      :rules="emailValidation"
+                    />
                   </div>
                 </div>
                 <div class="row items-center">
@@ -55,6 +61,10 @@
                     >登录</q-btn
                   >
                 </div>
+                <error-banner
+                  v-if="wrongEmailOrPassword"
+                  error-message="邮箱或密码错误"
+                />
               </div>
             </q-popup-proxy>
           </q-btn>
@@ -76,6 +86,18 @@
                   </div>
                 </div>
                 <div class="row items-center">
+                  <div class="col-3">邮箱</div>
+                  <div class="col-9">
+                    <q-input
+                      dense
+                      autofocus
+                      v-model="newUserEmail"
+                      type="email"
+                      :rules="emailValidation"
+                    />
+                  </div>
+                </div>
+                <div class="row items-center">
                   <div class="col-3">密码</div>
                   <div class="col-9">
                     <q-input
@@ -83,9 +105,7 @@
                       autofocus
                       v-model="newUserPassword"
                       :type="showPassword ? 'text' : 'password'"
-                      :rules="[
-                        val => !val || val.length >= 8 || '密码不能少于8位',
-                      ]"
+                      :rules="passwordValidation"
                     >
                       <template v-slot:append>
                         <q-icon
@@ -105,10 +125,7 @@
                       autofocus
                       v-model="newUserPasswordConfirmation"
                       :type="showPassword ? 'text' : 'password'"
-                      :rules="[
-                        val =>
-                          val === this.newUserPassword || '两次输入密码不一致',
-                      ]"
+                      :rules="passwordConfirmationValidation"
                     />
                   </div>
                 </div>
@@ -116,7 +133,7 @@
                   <q-btn
                     color="primary"
                     :disable="!validateSignUp"
-                    @click="logIn"
+                    @click="signUp"
                     >注册</q-btn
                   >
                 </div>
@@ -129,82 +146,6 @@
         </q-btn>
       </q-toolbar>
     </q-header>
-
-    <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
-      <q-list>
-        <q-item-label header>Essential Links</q-item-label>
-        <q-item
-          clickable
-          tag="a"
-          target="_blank"
-          href="http://v1.quasar-framework.org"
-        >
-          <q-item-section avatar>
-            <q-icon name="school" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Docs</q-item-label>
-            <q-item-label caption>v1.quasar-framework.org</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          tag="a"
-          target="_blank"
-          href="https://github.com/quasarframework/"
-        >
-          <q-item-section avatar>
-            <q-icon name="code" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Github</q-item-label>
-            <q-item-label caption>github.com/quasarframework</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          tag="a"
-          target="_blank"
-          href="http://chat.quasar-framework.org"
-        >
-          <q-item-section avatar>
-            <q-icon name="chat" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Discord Chat Channel</q-item-label>
-            <q-item-label caption>chat.quasar-framework.org</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          tag="a"
-          target="_blank"
-          href="https://forum.quasar-framework.org"
-        >
-          <q-item-section avatar>
-            <q-icon name="record_voice_over" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Forum</q-item-label>
-            <q-item-label caption>forum.quasar-framework.org</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          tag="a"
-          target="_blank"
-          href="https://twitter.com/quasarframework"
-        >
-          <q-item-section avatar>
-            <q-icon name="rss_feed" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Twitter</q-item-label>
-            <q-item-label caption>@quasarframework</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-drawer>
 
     <q-page-container>
       <router-view />
@@ -220,20 +161,36 @@
 
 <script>
 import gql from 'graphql-tag'
-import {LOG_IN, LOG_OUT} from '../common/mutation-types.js'
+import {LOG_IN, LOG_OUT} from '../common/mutation-types'
+import {MAY4TH_USER, MAY4TH_AUTH_TOKEN} from '../common/constants'
+import {EMAIL_REGEX, PASSWORD_REGEX} from '../common/regex'
+import ErrorBanner from '../components/ErrorBanner'
 
 export default {
   name: 'MyLayout',
+  components: {ErrorBanner},
   data() {
     return {
-      // leftDrawerOpen: this.$q.platform.is.desktop,
-      leftDrawerOpen: false,
-      userName: '',
+      userEmail: '',
       userPassword: '',
       newUserName: '',
+      newUserEmail: '',
       newUserPassword: '',
       newUserPasswordConfirmation: '',
       showPassword: false,
+      wrongEmailOrPassword: false,
+      emailValidation: [
+        val => !val || EMAIL_REGEX.test(val) || '请输入合法的邮箱地址',
+      ],
+      passwordValidation: [
+        val =>
+          !val ||
+          PASSWORD_REGEX.test(val) ||
+          '密码须为8-16位，包含数字、大写字母和小写字母',
+      ],
+      passwordConfirmationValidation: [
+        val => val === this.newUserPassword || '两次输入密码不一致',
+      ],
     }
   },
   computed: {
@@ -247,6 +204,7 @@ export default {
     validateSignUp() {
       if (
         this.newUserName !== '' &&
+        this.newUserEmail !== '' &&
         this.newUserPassword !== '' &&
         this.newUserPasswordConfirmation === this.newUserPassword
       )
@@ -255,27 +213,97 @@ export default {
     },
   },
   methods: {
+    handleError({graphQLErrors, networkError}) {
+      if (graphQLErrors) {
+        graphQLErrors.map(({message}) => {
+          if (message.error && message.error === 'Not Found') {
+            this.wrongEmailOrPassword = true
+            setTimeout(() => {
+              this.wrongEmailOrPassword = false
+            }, 2000)
+          }
+        })
+      }
+      if (networkError) {
+        console.log('网络错误')
+      }
+    },
+    clearUserInput() {
+      this.userEmail = ''
+      this.userPassword = ''
+      this.newUserName = ''
+      this.newUserEmail = ''
+      this.newUserPassword = ''
+      this.newUserPasswordConfirmation = ''
+    },
     logIn() {
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation {
-              logIn(email: "aaa@123.com", password: "12345678") {
-                token
+            mutation logInMutation($email: String!, $password: String!) {
+              logIn(email: $email, password: $password) {
+                jwt {
+                  token
+                  expiresAt
+                }
                 user {
                   id
                   name
+                  email
                 }
               }
             }
           `,
+          variables: {
+            email: this.userEmail,
+            password: this.userPassword,
+          },
         })
         .then(res => {
           this.$store.commit(LOG_IN, res.data.logIn)
+          this.clearUserInput()
+        })
+        .catch(err => this.handleError(err))
+    },
+    signUp() {
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation signUpMutation(
+              $password: String!
+              $name: String!
+              $email: String!
+            ) {
+              signUp(
+                newUser: {password: $password, name: $name, email: $email}
+              ) {
+                jwt {
+                  token
+                  expiresAt
+                }
+                user {
+                  id
+                  name
+                  email
+                }
+              }
+            }
+          `,
+          variables: {
+            password: this.newUserPassword,
+            name: this.newUserName,
+            email: this.newUserEmail,
+          },
+        })
+        .then(res => {
+          this.$store.commit(LOG_IN, res.data.signUp)
+          this.clearUserInput()
         })
         .catch(err => console.log(err))
     },
     logOut() {
+      localStorage.removeItem(MAY4TH_USER)
+      localStorage.removeItem(MAY4TH_AUTH_TOKEN)
       this.$store.commit(LOG_OUT)
     },
   },

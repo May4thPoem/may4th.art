@@ -1,0 +1,2 @@
+export const MAY4TH_USER = 'MAY4TH_USER'
+export const MAY4TH_AUTH_TOKEN = 'MAY4TH_AUTH_TOKEN'
