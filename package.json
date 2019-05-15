@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.1.2",
+    "apollo-link-context": "^1.0.17",
     "axios": "^0.18.0",
     "gsap": "^2.1.2",
     "moment": "^2.24.0",

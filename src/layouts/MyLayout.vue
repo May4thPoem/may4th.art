@@ -2,18 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          aria-label="Menu"
-          v-if="!$q.platform.is.desktop"
-        >
-          <q-icon name="menu" />
-        </q-btn>
-
-        <q-toolbar-title>
+        <q-toolbar-title @click="goHome" aria-label="Go to home page">
           May4th Poem
         </q-toolbar-title>
 
@@ -141,9 +130,12 @@
             </q-popup-proxy>
           </q-btn>
         </div>
-        <q-btn flat v-else @click="logOut">
-          退出
-        </q-btn>
+        <div v-else>
+          <q-btn flat @click="writePoem">写诗</q-btn>
+          <q-btn flat @click="logOut">
+            退出
+          </q-btn>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -213,6 +205,12 @@ export default {
     },
   },
   methods: {
+    goHome() {
+      this.$router.push('/')
+    },
+    writePoem() {
+      this.$router.push('write')
+    },
     handleError({graphQLErrors, networkError}) {
       if (graphQLErrors) {
         graphQLErrors.map(({message}) => {

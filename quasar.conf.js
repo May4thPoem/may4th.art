@@ -41,6 +41,9 @@ module.exports = function(ctx) {
         'QMenu',
         'QDialog',
         'QBanner',
+        'QEditor',
+        'QForm',
+        'QToggle',
       ],
 
       directives: ['Ripple'],
@@ -56,7 +59,7 @@ module.exports = function(ctx) {
 
     build: {
       scopeHoisting: true,
-      // vueRouterMode: 'history',
+      vueRouterMode: 'history',
       // vueCompiler: true,
       // gzip: true,
       // analyze: true,
