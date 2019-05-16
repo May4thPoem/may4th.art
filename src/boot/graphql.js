@@ -6,7 +6,7 @@ import {InMemoryCache} from 'apollo-cache-inmemory'
 import {MAY4TH_AUTH_TOKEN} from '../common/constants'
 
 export default ({Vue, app}) => {
-  const uri = process.env.API_END_POINT || 'http://localhost:3000/graphql'
+  const uri = process.env.API_ENDPOINT
   const httpLink = new HttpLink({uri})
 
   const authLink = setContext((_, {headers}) => {

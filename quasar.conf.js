@@ -60,8 +60,15 @@ module.exports = function(ctx) {
     build: {
       scopeHoisting: true,
       vueRouterMode: 'history',
+      env: ctx.dev
+        ? {
+            API_ENDPOINT: JSON.stringify('http://localhost:3000/graphql'),
+          }
+        : {
+            API_ENDPOINT: JSON.stringify('https://nest.may4th.art/graphql'),
+          },
       // vueCompiler: true,
-      // gzip: true,
+      gzip: true,
       // analyze: true,
       // extractCSS: false,
       extendWebpack(cfg) {
