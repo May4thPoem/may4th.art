@@ -26,7 +26,7 @@ export default ({Vue, app}) => {
   const defaultClient = new ApolloClient({
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
-    connectToDevTools: true,
+    connectToDevTools: process.env.NODE_ENV === 'development' ? true : false,
   })
 
   const apolloProvider = new VueApollo({

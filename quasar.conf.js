@@ -44,6 +44,7 @@ module.exports = function(ctx) {
         'QEditor',
         'QForm',
         'QToggle',
+        'QCard',
       ],
 
       directives: ['Ripple'],
@@ -68,7 +69,7 @@ module.exports = function(ctx) {
             API_ENDPOINT: JSON.stringify('https://nest.may4th.art/graphql'),
           },
       // vueCompiler: true,
-      gzip: true,
+      gzip: false,
       // analyze: true,
       // extractCSS: false,
       extendWebpack(cfg) {

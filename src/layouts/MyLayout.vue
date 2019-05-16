@@ -130,7 +130,8 @@
             </q-popup-proxy>
           </q-btn>
         </div>
-        <div v-else>
+        <div v-else class="flex">
+          <q-btn flat>欢迎来到May4th，{{ name }}</q-btn>
           <q-btn flat @click="writePoem">写诗</q-btn>
           <q-btn flat @click="logOut">
             退出
@@ -186,6 +187,9 @@ export default {
     }
   },
   computed: {
+    name() {
+      return this.$store.state.user.name
+    },
     isLoggedIn() {
       return this.$store.state.user.isLoggedIn
     },
@@ -303,6 +307,7 @@ export default {
       localStorage.removeItem(MAY4TH_USER)
       localStorage.removeItem(MAY4TH_AUTH_TOKEN)
       this.$store.commit(LOG_OUT)
+      this.$router.push('/')
     },
   },
 }

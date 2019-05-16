@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page>
     <!-- <div ref="hello" @click="handleClick">Hello</div> -->
     <example-graphql />
   </q-page>

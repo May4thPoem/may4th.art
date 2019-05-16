@@ -1,10 +1,17 @@
+import {PAGE_HOME, PAGE_MY, PAGE_WRITE} from '../common/constants'
+
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MyLayout.vue'),
     children: [
-      {path: '', component: () => import('pages/Index.vue')},
-      {path: 'write', component: () => import('pages/Write.vue')},
+      {name: PAGE_HOME, path: '', component: () => import('pages/Index.vue')},
+      {
+        name: PAGE_WRITE,
+        path: 'write',
+        component: () => import('pages/Write.vue'),
+      },
+      {name: PAGE_MY, path: 'my', component: () => import('pages/My.vue')},
     ],
   },
 ]
