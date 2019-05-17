@@ -27,6 +27,8 @@ module.exports = function(ctx) {
         'QDrawer',
         'QPageContainer',
         'QPage',
+        'QPageSticky',
+        'QPageScroller',
         'QToolbar',
         'QToolbarTitle',
         'QBtn',
@@ -45,6 +47,7 @@ module.exports = function(ctx) {
         'QForm',
         'QToggle',
         'QCard',
+        'QTable',
       ],
 
       directives: ['Ripple'],

@@ -6,12 +6,12 @@
       :class="index % 2 === 0 ? 'bg-blue-2' : 'bg-blue-3'"
       style="min-width: 250px;"
     >
-      <h3 style="padding: 10px;">{{ poem.title }}</h3>
+      <h3 class="poem-title">{{ poem.title }}</h3>
       <p style="padding-left: 10px;">
         <strong>Author: {{ poem.author.name }}</strong>
       </p>
-      <p v-html="poem.content" style="padding: 10px;" />
-      <p style="text-align: right; padding-right: 10px;">
+      <p v-html="poem.content" style="padding: 10px; max-height: 300px;" />
+      <p class="poem-time">
         <strong>{{ relativeTime(poem.createdAt) }}</strong>
       </p>
     </q-card>
@@ -20,8 +20,8 @@
 
 <script>
 import gql from 'graphql-tag'
-import moment from 'moment'
 import {NEW_POEM_FETCHED} from '../common/mutation-types'
+import relativeTime from '../common/utils/relative-time'
 
 export default {
   apollo: {
@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    relativeTime: timestamp => moment(timestamp).fromNow(),
+    relativeTime,
   },
 }
 </script>

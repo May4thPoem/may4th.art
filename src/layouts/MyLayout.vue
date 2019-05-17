@@ -2,12 +2,13 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-toolbar-title @click="goHome" aria-label="Go to home page">
+        <q-toolbar-title @click="navTo('/')" aria-label="Go to home page">
           May4th Poem
         </q-toolbar-title>
 
         <div v-if="!isLoggedIn">
           <q-btn flat>
+            <q-icon name="input" color="white" />
             登录
             <q-popup-proxy>
               <div class="col" style="padding: 10px;">
@@ -58,6 +59,7 @@
             </q-popup-proxy>
           </q-btn>
           <q-btn flat>
+            <q-icon name="person_pin" color="white" />
             注册
             <q-popup-proxy>
               <div class="col" style="padding: 10px;">
@@ -131,9 +133,13 @@
           </q-btn>
         </div>
         <div v-else class="flex">
-          <q-btn flat>欢迎来到May4th，{{ name }}</q-btn>
-          <q-btn flat @click="writePoem">写诗</q-btn>
+          <q-btn flat @click="navTo('/my')">欢迎来到May4th，{{ name }}</q-btn>
+          <q-btn flat @click="navTo('/write')">
+            <q-icon name="note_add" color="white" />
+            写诗
+          </q-btn>
           <q-btn flat @click="logOut">
+            <q-icon name="exit_to_app" color="white" />
             退出
           </q-btn>
         </div>
@@ -209,11 +215,8 @@ export default {
     },
   },
   methods: {
-    goHome() {
-      this.$router.push('/')
-    },
-    writePoem() {
-      this.$router.push('write')
+    navTo(path) {
+      this.$router.push(path)
     },
     handleError({graphQLErrors, networkError}) {
       if (graphQLErrors) {
@@ -313,4 +316,13 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="stylus">
+.poem-title
+  padding 10px
+  text-align center
+  text-overflow ellipsis
+
+.poem-time
+  text-align right
+  padding-right 10px
+</style>
