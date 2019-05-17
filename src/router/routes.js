@@ -1,4 +1,4 @@
-import {PAGE_HOME, PAGE_MY, PAGE_WRITE} from '../common/constants'
+import {PAGE_HOME, PAGE_MY, PAGE_WRITE, PAGE_POEM} from '../common/constants'
 
 const routes = [
   {
@@ -12,6 +12,11 @@ const routes = [
         component: () => import('pages/Write.vue'),
       },
       {name: PAGE_MY, path: 'my', component: () => import('pages/My.vue')},
+      {
+        name: PAGE_POEM,
+        path: 'poem/:id',
+        component: () => import('pages/Poem.vue'),
+      },
     ],
   },
 ]

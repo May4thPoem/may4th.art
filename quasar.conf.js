@@ -48,6 +48,8 @@ module.exports = function(ctx) {
         'QToggle',
         'QCard',
         'QTable',
+        'QTr',
+        'QTd',
       ],
 
       directives: ['Ripple'],

@@ -6,7 +6,32 @@
       :data="myPoems"
       :columns="columns"
       row-key="name"
-    ></q-table>
+    >
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td key="title" :props="props">{{ props.row.title }}</q-td>
+          <q-td key="isPublic" :props="props">{{
+            props.row.isPublic ? '是' : '否'
+          }}</q-td>
+          <q-td key="createdAt" :props="props">{{
+            new Date(props.row.createdAt).toLocaleString()
+          }}</q-td>
+          <q-td key="updatedAt" :props="props">{{
+            relativeTime(props.row.updatedAt)
+          }}</q-td>
+          <q-td>
+            <q-btn color="primary">
+              <q-icon name="edit" color="white" />
+              修改
+            </q-btn>
+            <q-btn color="red">
+              <q-icon name="delete" color="white" />
+              删除
+            </q-btn>
+          </q-td>
+        </q-tr>
+      </template>
+    </q-table>
   </div>
 </template>
 
@@ -26,8 +51,7 @@ export default {
           required: true,
           label: '标题',
           align: 'left',
-          field: row => row.title,
-          format: val => `${val}`,
+          field: 'title',
           sortable: true,
         },
         {
@@ -35,7 +59,7 @@ export default {
           required: true,
           label: '是否公开',
           align: 'center',
-          field: row => row.isPublic,
+          field: 'isPublic',
           format: val => (val ? '是' : '否'),
           sortable: false,
         },
@@ -44,8 +68,7 @@ export default {
           required: true,
           label: '发布时间',
           align: 'center',
-          field: row => row.createdAt,
-          format: val => new Date(val).toLocaleString(),
+          field: 'createdAt',
           sortable: true,
         },
         {
@@ -53,8 +76,7 @@ export default {
           required: true,
           label: '最后更新',
           align: 'center',
-          field: row => row.updatedAt,
-          format: val => new Date(val).toLocaleString(),
+          field: 'updatedAt',
           sortable: true,
         },
       ],

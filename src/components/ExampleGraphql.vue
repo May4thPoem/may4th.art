@@ -6,14 +6,16 @@
       :class="index % 2 === 0 ? 'bg-blue-2' : 'bg-blue-3'"
       style="min-width: 250px;"
     >
-      <h3 class="poem-title">{{ poem.title }}</h3>
-      <p style="padding-left: 10px;">
-        <strong>Author: {{ poem.author.name }}</strong>
-      </p>
-      <p v-html="poem.content" style="padding: 10px; max-height: 300px;" />
       <p class="poem-time">
         <strong>{{ relativeTime(poem.createdAt) }}</strong>
       </p>
+      <h3 class="poem-title" @click="navTo(`/poem/${poem.id}`)">
+        {{ poem.title }}
+      </h3>
+      <p style="padding-left: 10px;">
+        <strong>Author: {{ poem.author.name }}</strong>
+      </p>
+      <p v-html="poem.content" class="poem-content" />
     </q-card>
   </div>
 </template>
@@ -30,6 +32,7 @@ export default {
         return gql`
           query {
             allPublicPoems {
+              id
               author {
                 name
               }
@@ -55,6 +58,9 @@ export default {
   },
   methods: {
     relativeTime,
+    navTo(path) {
+      this.$router.push(path)
+    },
   },
 }
 </script>

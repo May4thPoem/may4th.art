@@ -318,11 +318,17 @@ export default {
 
 <style lang="stylus">
 .poem-title
-  padding 10px
+  padding-left 10px
+  padding-right 10px
   text-align center
   text-overflow ellipsis
 
 .poem-time
   text-align right
+  padding-top 10px
   padding-right 10px
+
+.poem-content
+  padding 10px
+  max-height 300px
 </style>
