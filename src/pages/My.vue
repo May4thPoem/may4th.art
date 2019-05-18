@@ -19,16 +19,17 @@
           <q-td key="updatedAt" :props="props">{{
             relativeTime(props.row.updatedAt)
           }}</q-td>
-          <q-td>
+          <q-td auto-width>
             <q-btn color="primary">
               <q-icon name="edit" color="white" />
-              修改
-            </q-btn>
-            <q-btn color="red">
-              <q-icon name="delete" color="white" />
-              删除
             </q-btn>
           </q-td>
+          <q-td auto-width>
+            <q-btn color="red">
+              <q-icon name="delete" color="white" />
+            </q-btn>
+          </q-td>
+          <q-td auto-width />
         </q-tr>
       </template>
     </q-table>
@@ -86,7 +87,7 @@ export default {
     myPoems: {
       query() {
         return gql`
-          query {
+          query myPoemsQuery {
             myPoems {
               title
               content
