@@ -21,39 +21,19 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-import {NEW_POEM_FETCHED} from '../common/mutation-types'
 import relativeTime from '../common/utils/relative-time'
+import {allPublicPoemsQuery} from '../gql/queries'
 
 export default {
   apollo: {
     allPublicPoems: {
-      query() {
-        return gql`
-          query {
-            allPublicPoems {
-              id
-              author {
-                name
-              }
-              title
-              content
-              createdAt
-            }
-          }
-        `
-      },
+      query: allPublicPoemsQuery,
+      fetchPolicy: 'cache-and-network',
     },
-  },
-  created() {
-    if (this.$store.state.poem.newPoem) {
-      this.$apollo.queries.allPublicPoems.refetch()
-      this.$store.commit(NEW_POEM_FETCHED)
-    }
   },
   data() {
     return {
-      poems: {},
+      allPublicPoems: {},
     }
   },
   methods: {

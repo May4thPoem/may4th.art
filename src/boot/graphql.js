@@ -4,6 +4,8 @@ import {HttpLink} from 'apollo-link-http'
 import {setContext} from 'apollo-link-context'
 import {InMemoryCache} from 'apollo-cache-inmemory'
 import {MAY4TH_AUTH_TOKEN} from '../common/constants'
+import typeDefs from '../gql/localSchema'
+import resolvers from '../gql/resolvers'
 
 export default ({Vue, app}) => {
   const uri = process.env.API_ENDPOINT
@@ -27,6 +29,8 @@ export default ({Vue, app}) => {
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
     connectToDevTools: process.env.NODE_ENV === 'development' ? true : false,
+    resolvers,
+    typeDefs,
   })
 
   const apolloProvider = new VueApollo({

@@ -20,12 +20,12 @@
             relativeTime(props.row.updatedAt)
           }}</q-td>
           <q-td auto-width>
-            <q-btn color="primary">
+            <q-btn color="primary" @click="editPoem">
               <q-icon name="edit" color="white" />
             </q-btn>
           </q-td>
           <q-td auto-width>
-            <q-btn color="red">
+            <q-btn color="red" @click="deletePoem(props.row.id)">
               <q-icon name="delete" color="white" />
             </q-btn>
           </q-td>
@@ -39,8 +39,9 @@
 <style></style>
 
 <script>
-import gql from 'graphql-tag'
 import relativeTime from '../common/utils/relative-time'
+import {myPoemsQuery} from '../gql/queries'
+import {deletePoemMutation} from '../gql/mutations'
 
 export default {
   name: 'PageMy',
@@ -81,27 +82,35 @@ export default {
           sortable: true,
         },
       ],
+      myPoems: [],
+      currentId: 0,
     }
   },
   apollo: {
     myPoems: {
-      query() {
-        return gql`
-          query myPoemsQuery {
-            myPoems {
-              title
-              content
-              createdAt
-              updatedAt
-              isPublic
-            }
-          }
-        `
-      },
+      query: myPoemsQuery,
+      fetchPolicy: 'cache-and-network',
     },
   },
   methods: {
     relativeTime,
+    editPoem() {},
+    deletePoem(id) {
+      this.$apollo
+        .mutate({
+          mutation: deletePoemMutation,
+          variables: {
+            id: parseInt(id, 10),
+          },
+          update(proxy) {
+            const data = proxy.readQuery({query: myPoemsQuery})
+            const idx = data.myPoems.findIndex(poem => poem.id === id)
+            data.myPoems.splice(idx, 1)
+            proxy.writeQuery({query: myPoemsQuery, data})
+          },
+        })
+        .catch(err => console.log(err))
+    },
   },
 }
 </script>

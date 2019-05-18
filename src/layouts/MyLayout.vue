@@ -133,7 +133,9 @@
           </q-btn>
         </div>
         <div v-else class="flex">
-          <q-btn flat @click="navTo('/my')">欢迎来到May4th，{{ name }}</q-btn>
+          <q-btn flat @click="navTo('/my')">{{
+            $q.platform.is.mobile ? '我的' : `欢迎来到May4th，${name}`
+          }}</q-btn>
           <q-btn flat @click="navTo('/write')">
             <q-icon name="note_add" color="white" />
             写诗
@@ -159,11 +161,11 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import {LOG_IN, LOG_OUT} from '../common/mutation-types'
 import {MAY4TH_USER, MAY4TH_AUTH_TOKEN} from '../common/constants'
 import {EMAIL_REGEX, PASSWORD_REGEX} from '../common/regex'
 import ErrorBanner from '../components/ErrorBanner'
+import {logInMutation, signUpMutation} from '../gql/mutations'
 
 export default {
   name: 'MyLayout',
@@ -244,21 +246,7 @@ export default {
     logIn() {
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation logInMutation($email: String!, $password: String!) {
-              logIn(email: $email, password: $password) {
-                jwt {
-                  token
-                  expiresAt
-                }
-                user {
-                  id
-                  name
-                  email
-                }
-              }
-            }
-          `,
+          mutation: logInMutation,
           variables: {
             email: this.userEmail,
             password: this.userPassword,
@@ -273,27 +261,7 @@ export default {
     signUp() {
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation signUpMutation(
-              $password: String!
-              $name: String!
-              $email: String!
-            ) {
-              signUp(
-                newUser: {password: $password, name: $name, email: $email}
-              ) {
-                jwt {
-                  token
-                  expiresAt
-                }
-                user {
-                  id
-                  name
-                  email
-                }
-              }
-            }
-          `,
+          mutation: signUpMutation,
           variables: {
             password: this.newUserPassword,
             name: this.newUserName,

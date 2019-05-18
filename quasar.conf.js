@@ -50,6 +50,7 @@ module.exports = function(ctx) {
         'QTable',
         'QTr',
         'QTd',
+        'QParallax',
       ],
 
       directives: ['Ripple'],

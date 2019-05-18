@@ -23,8 +23,8 @@
 <style></style>
 
 <script>
-import gql from 'graphql-tag'
-import {NEW_POEM} from '../common/mutation-types'
+import {allPublicPoemsQuery} from '../gql/queries'
+import {postPoemMutation} from '../gql/mutations'
 
 export default {
   name: 'PageWrite',
@@ -39,28 +39,28 @@ export default {
     postPoem() {
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation postPoemMutation(
-              $title: String!
-              $content: String!
-              $isPublic: Boolean
-            ) {
-              postPoem(
-                newPoem: {title: $title, content: $content, isPublic: $isPublic}
-              ) {
-                title
-              }
-            }
-          `,
+          mutation: postPoemMutation,
           variables: {
             title: this.title,
             content: this.content,
             isPublic: this.isPublic,
           },
+          update(
+            proxy,
+            {
+              data: {postPoem},
+            },
+          ) {
+            if (postPoem.isPublic) {
+              const data = proxy.readQuery({query: allPublicPoemsQuery})
+              data.allPublicPoems.push(postPoem)
+              proxy.writeQuery({query: allPublicPoemsQuery, data})
+              console.log(proxy.readQuery({query: allPublicPoemsQuery}))
+            }
+          },
         })
         .then(() => {
           this.$router.push('/')
-          this.$store.commit(NEW_POEM)
         })
         .catch(err => console.error(err))
     },
