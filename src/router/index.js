@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
-import {PRIVATE_PAGES} from '../common/constants'
+import {MAY4TH_AUTH_TOKEN, PRIVATE_PAGES} from '../common/constants'
 
 Vue.use(VueRouter)
 
@@ -10,7 +10,8 @@ Vue.use(VueRouter)
  * directly export the Router instantiation
  */
 
-export default function({store}) {
+export default function(ctx) {
+  console.log(ctx)
   const Router = new VueRouter({
     scrollBehavior: () => ({x: 0, y: 0}),
     routes,
@@ -23,7 +24,10 @@ export default function({store}) {
   })
 
   Router.beforeEach((to, from, next) => {
-    if (PRIVATE_PAGES.includes(to.name) && !store.state.user.isLoggedIn)
+    if (
+      PRIVATE_PAGES.includes(to.name) &&
+      !localStorage.getItem(MAY4TH_AUTH_TOKEN)
+    )
       next('/')
     else next()
   })

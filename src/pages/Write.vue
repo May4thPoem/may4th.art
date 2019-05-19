@@ -55,7 +55,6 @@ export default {
               const data = proxy.readQuery({query: allPublicPoemsQuery})
               data.allPublicPoems.push(postPoem)
               proxy.writeQuery({query: allPublicPoemsQuery, data})
-              console.log(proxy.readQuery({query: allPublicPoemsQuery}))
             }
           },
         })

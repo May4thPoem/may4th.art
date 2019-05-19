@@ -1,10 +1,17 @@
 import gql from 'graphql-tag'
 
 const typeDefs = gql`
-  type Item {
-    id: ID!
-    text: String!
-    done: Boolean!
+  type Mutation {
+    logInLocal(userStatus: UserStatus!): Boolean!
+    logOut: Boolean!
+  }
+
+  type Query {
+    session: Session!
+  }
+
+  extend type Session {
+    isLoggedIn: Boolean!
   }
 `
 

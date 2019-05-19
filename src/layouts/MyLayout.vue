@@ -6,7 +6,7 @@
           May4th Poem
         </q-toolbar-title>
 
-        <div v-if="!isLoggedIn">
+        <div v-if="!session.isLoggedIn">
           <q-btn flat>
             <q-icon name="input" color="white" />
             登录
@@ -134,7 +134,9 @@
         </div>
         <div v-else class="flex">
           <q-btn flat @click="navTo('/my')">{{
-            $q.platform.is.mobile ? '我的' : `欢迎来到May4th，${name}`
+            $q.platform.is.mobile
+              ? '我的'
+              : `欢迎来到May4th，${session.user.name}`
           }}</q-btn>
           <q-btn flat @click="navTo('/write')">
             <q-icon name="note_add" color="white" />
@@ -161,14 +163,24 @@
 </template>
 
 <script>
-import {LOG_IN, LOG_OUT} from '../common/mutation-types'
-import {MAY4TH_USER, MAY4TH_AUTH_TOKEN} from '../common/constants'
 import {EMAIL_REGEX, PASSWORD_REGEX} from '../common/regex'
 import ErrorBanner from '../components/ErrorBanner'
-import {logInMutation, signUpMutation} from '../gql/mutations'
+import {sessionQuery} from '../gql/queries'
+import {
+  logInMutation,
+  signUpMutation,
+  logInLocalMutation,
+  logOutMutation,
+} from '../gql/mutations'
 
 export default {
   name: 'MyLayout',
+  apollo: {
+    session: {
+      query: sessionQuery,
+      fetchPolicy: 'cache',
+    },
+  },
   components: {ErrorBanner},
   data() {
     return {
@@ -180,6 +192,7 @@ export default {
       newUserPasswordConfirmation: '',
       showPassword: false,
       wrongEmailOrPassword: false,
+      session: {},
       emailValidation: [
         val => !val || EMAIL_REGEX.test(val) || '请输入合法的邮箱地址',
       ],
@@ -195,12 +208,6 @@ export default {
     }
   },
   computed: {
-    name() {
-      return this.$store.state.user.name
-    },
-    isLoggedIn() {
-      return this.$store.state.user.isLoggedIn
-    },
     validateLogIn() {
       if (this.userName !== '' && this.userPassword !== '') return true
       else return false
@@ -253,7 +260,12 @@ export default {
           },
         })
         .then(res => {
-          this.$store.commit(LOG_IN, res.data.logIn)
+          this.$apollo.mutate({
+            mutation: logInLocalMutation,
+            variables: {
+              session: {...res.data.logIn, isLoggedIn: true},
+            },
+          })
           this.clearUserInput()
         })
         .catch(err => this.handleError(err))
@@ -269,15 +281,20 @@ export default {
           },
         })
         .then(res => {
-          this.$store.commit(LOG_IN, res.data.signUp)
+          this.$apollo.mutate({
+            mutation: logInLocalMutation,
+            variables: {
+              session: {...res.data.signUp, isLoggedIn: true},
+            },
+          })
           this.clearUserInput()
         })
         .catch(err => console.log(err))
     },
     logOut() {
-      localStorage.removeItem(MAY4TH_USER)
-      localStorage.removeItem(MAY4TH_AUTH_TOKEN)
-      this.$store.commit(LOG_OUT)
+      this.$apollo.mutate({
+        mutation: logOutMutation,
+      })
       this.$router.push('/')
     },
   },

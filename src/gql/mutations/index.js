@@ -35,6 +35,18 @@ export const logInMutation = gql`
   }
 `
 
+export const logInLocalMutation = gql`
+  mutation logInLocalMutation($session: session!) {
+    logInLocal(session: $session) @client
+  }
+`
+
+export const logOutMutation = gql`
+  mutation logOutMutation {
+    logOut @client
+  }
+`
+
 export const signUpMutation = gql`
   mutation signUpMutation($password: String!, $name: String!, $email: String!) {
     signUp(newUser: {password: $password, name: $name, email: $email}) {

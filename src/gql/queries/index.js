@@ -40,3 +40,20 @@ export const poemQuery = gql`
     }
   }
 `
+
+export const sessionQuery = gql`
+  query sessionQuery {
+    session @client {
+      user {
+        id
+        email
+        name
+      }
+      jwt {
+        token
+        expiresAt
+      }
+      isLoggedIn
+    }
+  }
+`
