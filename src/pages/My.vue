@@ -38,12 +38,14 @@
 
 <style></style>
 
-<script>
-import relativeTime from '../common/utils/relative-time'
+<script lang="ts">
+import Vue from 'vue'
+import {relativeTime} from '../common/utils'
+import {Poem, MyPoemsQuery} from '../common/types'
 import {myPoemsQuery} from '../gql/queries'
 import {deletePoemMutation} from '../gql/mutations'
 
-export default {
+export default Vue.extend({
   name: 'PageMy',
   data() {
     return {
@@ -62,7 +64,7 @@ export default {
           label: '是否公开',
           align: 'center',
           field: 'isPublic',
-          format: val => (val ? '是' : '否'),
+          format: (isPublic: boolean) => (isPublic ? '是' : '否'),
           sortable: false,
         },
         {
@@ -95,24 +97,26 @@ export default {
   methods: {
     relativeTime,
     editPoem() {},
-    deletePoem(id) {
+    deletePoem(id: string) {
       this.$apollo
         .mutate({
           mutation: deletePoemMutation,
           variables: {
-            id: parseInt(id, 10),
+            id,
           },
           update(proxy) {
-            const data = proxy.readQuery({query: myPoemsQuery})
-            const idx = data.myPoems.findIndex(poem => poem.id === id)
-            data.myPoems.splice(idx, 1)
-            proxy.writeQuery({query: myPoemsQuery, data})
+            const data = proxy.readQuery<MyPoemsQuery>({query: myPoemsQuery})
+            if (data) {
+              const idx = data.myPoems.findIndex((poem: Poem) => poem.id === id)
+              data.myPoems.splice(idx, 1)
+              proxy.writeQuery({query: myPoemsQuery, data})
+            }
           },
         })
         .catch(err => console.log(err))
     },
   },
-}
+})
 </script>
 
 <style lang="stylus" scoped>

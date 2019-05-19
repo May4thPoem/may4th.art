@@ -1,6 +1,7 @@
+import {RouteConfig} from 'vue-router'
 import {PAGE_HOME, PAGE_MY, PAGE_WRITE, PAGE_POEM} from '../common/constants'
 
-const routes = [
+const routes: RouteConfig[] = [
   {
     path: '/',
     component: () => import('layouts/MyLayout.vue'),

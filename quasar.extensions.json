@@ -1,5 +1,9 @@
 {
   "@quasar/graphql": {
     "options": ["apollo"]
+  },
+  "@quasar/typescript": {
+    "webpack": "plugin",
+    "rename": true
   }
 }

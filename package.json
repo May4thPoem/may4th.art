@@ -10,13 +10,15 @@
     "dev": "quasar dev",
     "build": "quasar build",
     "now-build": "yarn build",
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --ext .js,.ts,.vue src",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
     "@quasar/extras": "^1.1.2",
+    "apollo-boost": "^0.3.1",
     "apollo-link-context": "^1.0.17",
     "axios": "^0.18.0",
+    "dompurify": "^1.0.10",
     "gsap": "^2.1.2",
     "moment": "^2.24.0",
     "quasar": "^1.0.0-beta.23"
@@ -24,6 +26,12 @@
   "devDependencies": {
     "@quasar/app": "^1.0.0-beta.24",
     "@quasar/quasar-app-extension-graphql": "^1.0.0-alpha.1",
+    "@quasar/quasar-app-extension-typescript": "^1.0.0-alpha.14",
+    "@types/dompurify": "^0.0.32",
+    "@types/graphql": "^14.2.0",
+    "@types/gsap": "^1.20.2",
+    "@types/node": "11.9.5",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@vue/eslint-config-prettier": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "devtron": "^1.4.0",

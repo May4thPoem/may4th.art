@@ -10,8 +10,7 @@ Vue.use(VueRouter)
  * directly export the Router instantiation
  */
 
-export default function(ctx) {
-  console.log(ctx)
+export default function() {
   const Router = new VueRouter({
     scrollBehavior: () => ({x: 0, y: 0}),
     routes,
@@ -25,6 +24,7 @@ export default function(ctx) {
 
   Router.beforeEach((to, from, next) => {
     if (
+      to.name &&
       PRIVATE_PAGES.includes(to.name) &&
       !localStorage.getItem(MAY4TH_AUTH_TOKEN)
     )

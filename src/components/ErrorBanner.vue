@@ -7,11 +7,16 @@
   </q-banner>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   name: 'ErrorBanner',
   props: {
-    errorMessage: String,
+    errorMessage: {
+      type: String,
+      default: '',
+    },
   },
-}
+})
 </script>

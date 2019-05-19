@@ -3,7 +3,7 @@ import {sessionQuery} from '../queries'
 
 const resolvers = {
   Mutation: {
-    logInLocal(_, {session}, {cache}) {
+    logInLocal(_: any, {session}: any, {cache}: any) {
       cache.writeQuery({query: sessionQuery, data: {session}})
       localStorage.setItem(MAY4TH_USER, JSON.stringify(session.user))
       localStorage.setItem(MAY4TH_AUTH_TOKEN, JSON.stringify(session.jwt))
@@ -11,7 +11,7 @@ const resolvers = {
       return true
     },
 
-    logOut(_, __, {cache}) {
+    logOut(_: any, __: any, {cache}: any) {
       const data = {
         session: {
           user: {
@@ -30,6 +30,7 @@ const resolvers = {
         },
       }
       cache.writeQuery({query: sessionQuery, data})
+      // cache.writeQuery({query: myPoemsQuery, data: {myPoems: []}})
 
       localStorage.removeItem(MAY4TH_USER)
       localStorage.removeItem(MAY4TH_AUTH_TOKEN)

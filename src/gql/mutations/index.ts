@@ -64,7 +64,7 @@ export const signUpMutation = gql`
 `
 
 export const deletePoemMutation = gql`
-  mutation deletePoemMutation($id: Float!) {
+  mutation deletePoemMutation($id: String!) {
     deletePoem(id: $id)
   }
 `

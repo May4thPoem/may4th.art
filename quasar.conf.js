@@ -51,6 +51,9 @@ module.exports = function(ctx) {
         'QTr',
         'QTd',
         'QParallax',
+        'QPullToRefresh',
+        'QInfiniteScroll',
+        'QSpinnerDots',
       ],
 
       directives: ['Ripple'],

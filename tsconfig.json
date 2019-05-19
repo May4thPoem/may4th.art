@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "sourceMap": false,
+    "target": "es6",
+    "strict": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "baseUrl": "."
+  },
+  "include": ["./src/**/*"]
+}

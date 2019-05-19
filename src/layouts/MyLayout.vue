@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-toolbar-title @click="navTo('/')" aria-label="Go to home page">
+        <q-toolbar-title aria-label="Go to home page" @click="navTo('/')">
           May4th Poem
         </q-toolbar-title>
 
@@ -16,9 +16,9 @@
                   <div class="col-3">邮箱</div>
                   <div class="col-9">
                     <q-input
+                      v-model="userEmail"
                       dense
                       autofocus
-                      v-model="userEmail"
                       type="email"
                       :rules="emailValidation"
                     />
@@ -28,9 +28,9 @@
                   <div class="col-3">密码</div>
                   <div class="col-9">
                     <q-input
+                      v-model="userPassword"
                       dense
                       autofocus
-                      v-model="userPassword"
                       :type="showPassword ? 'text' : 'password'"
                     >
                       <template v-slot:append>
@@ -67,9 +67,9 @@
                   <div class="col-3">用户名</div>
                   <div class="col-9">
                     <q-input
+                      v-model="newUserName"
                       dense
                       autofocus
-                      v-model="newUserName"
                       :rules="[
                         val => val.length <= 16 || '用户名长度不能超过16个字符',
                       ]"
@@ -80,9 +80,9 @@
                   <div class="col-3">邮箱</div>
                   <div class="col-9">
                     <q-input
+                      v-model="newUserEmail"
                       dense
                       autofocus
-                      v-model="newUserEmail"
                       type="email"
                       :rules="emailValidation"
                     />
@@ -92,9 +92,9 @@
                   <div class="col-3">密码</div>
                   <div class="col-9">
                     <q-input
+                      v-model="newUserPassword"
                       dense
                       autofocus
-                      v-model="newUserPassword"
                       :type="showPassword ? 'text' : 'password'"
                       :rules="passwordValidation"
                     >
@@ -112,9 +112,9 @@
                   <div class="col-3">确认</div>
                   <div class="col-9">
                     <q-input
+                      v-model="newUserPasswordConfirmation"
                       dense
                       autofocus
-                      v-model="newUserPasswordConfirmation"
                       :type="showPassword ? 'text' : 'password'"
                       :rules="passwordConfirmationValidation"
                     />
@@ -162,9 +162,10 @@
   </q-layout>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import {EMAIL_REGEX, PASSWORD_REGEX} from '../common/regex'
-import ErrorBanner from '../components/ErrorBanner'
+import ErrorBanner from '../components/ErrorBanner.vue'
 import {sessionQuery} from '../gql/queries'
 import {
   logInMutation,
@@ -173,12 +174,11 @@ import {
   logOutMutation,
 } from '../gql/mutations'
 
-export default {
+export default Vue.extend({
   name: 'MyLayout',
   apollo: {
     session: {
       query: sessionQuery,
-      fetchPolicy: 'cache',
     },
   },
   components: {ErrorBanner},
@@ -194,22 +194,20 @@ export default {
       wrongEmailOrPassword: false,
       session: {},
       emailValidation: [
-        val => !val || EMAIL_REGEX.test(val) || '请输入合法的邮箱地址',
+        (val: string) =>
+          !val || EMAIL_REGEX.test(val) || '请输入合法的邮箱地址',
       ],
       passwordValidation: [
-        val =>
+        (val: string) =>
           !val ||
           PASSWORD_REGEX.test(val) ||
           '密码须为8-16位，包含数字、大写字母和小写字母',
-      ],
-      passwordConfirmationValidation: [
-        val => val === this.newUserPassword || '两次输入密码不一致',
       ],
     }
   },
   computed: {
     validateLogIn() {
-      if (this.userName !== '' && this.userPassword !== '') return true
+      if (this.userEmail !== '' && this.userPassword !== '') return true
       else return false
     },
     validateSignUp() {
@@ -222,14 +220,19 @@ export default {
         return true
       else return false
     },
+    passwordConfirmationValidation() {
+      return [
+        (val: string) => val === this.newUserPassword || '两次输入密码不一致',
+      ]
+    },
   },
   methods: {
-    navTo(path) {
+    navTo(path: string) {
       this.$router.push(path)
     },
-    handleError({graphQLErrors, networkError}) {
+    handleError({graphQLErrors, networkError}: any) {
       if (graphQLErrors) {
-        graphQLErrors.map(({message}) => {
+        graphQLErrors.map(({message}: any) => {
           if (message.error && message.error === 'Not Found') {
             this.wrongEmailOrPassword = true
             setTimeout(() => {
@@ -298,11 +301,13 @@ export default {
       this.$router.push('/')
     },
   },
-}
+})
 </script>
 
 <style lang="stylus">
 .poem-title
+  font-size 1.5rem
+  line-height 2rem
   padding-left 10px
   padding-right 10px
   text-align center

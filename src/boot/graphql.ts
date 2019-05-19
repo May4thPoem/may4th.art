@@ -7,10 +7,8 @@ import {MAY4TH_AUTH_TOKEN, MAY4TH_USER} from '../common/constants'
 import typeDefs from '../gql/localSchema'
 import resolvers from '../gql/resolvers'
 
+// @ts-ignore
 export default ({Vue, app}) => {
-  const uri = process.env.API_ENDPOINT
-  const httpLink = new HttpLink({uri})
-
   const user = localStorage.getItem(MAY4TH_USER)
   const {id, name, email} = user
     ? JSON.parse(user)
@@ -24,30 +22,10 @@ export default ({Vue, app}) => {
     ? JSON.parse(jwt)
     : {
         token: '',
+        expiresAt: 0,
       }
   const isLoggedIn = token !== '' && expiresAt > Date.now()
-
-  const authLink = setContext((_, {headers}) => {
-    return {
-      headers: {
-        ...headers,
-        authorization: token ? `Bearer ${token}` : '',
-      },
-    }
-  })
-
-  const cache = new InMemoryCache()
-
-  // Create the apollo client
-  const defaultClient = new ApolloClient({
-    link: authLink.concat(httpLink),
-    connectToDevTools: process.env.NODE_ENV === 'development' ? true : false,
-    cache,
-    resolvers,
-    typeDefs,
-  })
-
-  cache.writeData({
+  const defaultData = {
     data: {
       session: {
         __typename: 'Session',
@@ -65,13 +43,40 @@ export default ({Vue, app}) => {
         isLoggedIn,
       },
     },
+  }
+
+  const authLink = setContext((_, {headers}) => {
+    const jwt = localStorage.getItem(MAY4TH_AUTH_TOKEN)
+    const {token} = jwt ? JSON.parse(jwt) : {token: ''}
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    }
   })
+
+  const uri = process.env.API_ENDPOINT
+  const httpLink = new HttpLink({uri})
+
+  const cache = new InMemoryCache()
+
+  // Create the apollo client
+  const defaultClient = new ApolloClient({
+    link: authLink.concat(httpLink),
+    connectToDevTools: process.env.NODE_ENV === 'development' ? true : false,
+    cache,
+    resolvers,
+    typeDefs,
+  })
+
+  cache.writeData(defaultData)
 
   const apolloProvider = new VueApollo({
     defaultClient,
-    errorHandler({graphQLErrors, networkError}) {
+    errorHandler({graphQLErrors, networkError}: any) {
       if (graphQLErrors) {
-        graphQLErrors.map(({message, locations, path}) =>
+        graphQLErrors.map(({message, locations, path}: any) =>
           console.log(
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
           ),

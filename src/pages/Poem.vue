@@ -14,7 +14,7 @@
             <p style="padding-left: 10px;">
               <strong>Author: {{ poem.author.name }}</strong>
             </p>
-            <p v-html="poem.content" class="poem-content" />
+            <p class="poem-content" v-html="sanitize(poem.content)" />
           </q-card>
         </div>
       </div>
@@ -24,11 +24,13 @@
     </template>
   </ApolloQuery>
 </template>
-<script>
-import relativeTime from '../common/utils/relative-time'
+<script lang="ts">
+import {sanitize, relativeTime} from '../common/utils'
 import {poemQuery} from '../gql/queries'
 
-export default {
+import Vue from 'vue'
+
+export default Vue.extend({
   name: 'PagePoem',
   apollo: {
     poem: {
@@ -41,22 +43,23 @@ export default {
       fetchPolicy: 'cache-and-network',
     },
   },
-  computed: {
-    id() {
-      return parseInt(this.$route.params.id, 10)
-    },
-  },
   data() {
     return {
       poemQuery,
       poem: {},
     }
   },
+  computed: {
+    id(): string {
+      return this.$route.params.id
+    },
+  },
   methods: {
     relativeTime,
-    navTo(path) {
+    sanitize,
+    navTo(path: string) {
       this.$router.push(path)
     },
   },
-}
+})
 </script>

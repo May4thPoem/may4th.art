@@ -28,7 +28,7 @@ export const myPoemsQuery = gql`
 `
 
 export const poemQuery = gql`
-  query poemQuery($id: Float!) {
+  query poemQuery($id: String!) {
     poem(id: $id) {
       author {
         name
