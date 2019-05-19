@@ -138,7 +138,7 @@
               ? '我的'
               : `欢迎来到May4th，${session.user.name}`
           }}</q-btn>
-          <q-btn flat @click="navTo('/write')">
+          <q-btn flat @click="navTo('/poem/new')">
             <q-icon name="note_add" color="white" />
             写诗
           </q-btn>
@@ -321,4 +321,9 @@ export default Vue.extend({
 .poem-content
   padding 10px
   max-height 300px
+
+.poem-edit
+  text-align right
+  padding-bottom 10px
+  padding-right 10px
 </style>

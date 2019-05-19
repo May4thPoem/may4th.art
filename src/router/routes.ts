@@ -1,5 +1,11 @@
 import {RouteConfig} from 'vue-router'
-import {PAGE_HOME, PAGE_MY, PAGE_WRITE, PAGE_POEM} from '../common/constants'
+import {
+  PAGE_HOME,
+  PAGE_MY,
+  PAGE_WRITE,
+  PAGE_POEM,
+  PAGE_EDIT,
+} from '../common/constants'
 
 const routes: RouteConfig[] = [
   {
@@ -9,7 +15,7 @@ const routes: RouteConfig[] = [
       {name: PAGE_HOME, path: '', component: () => import('pages/Index.vue')},
       {
         name: PAGE_WRITE,
-        path: 'write',
+        path: 'poem/new',
         component: () => import('pages/Write.vue'),
       },
       {name: PAGE_MY, path: 'my', component: () => import('pages/My.vue')},
@@ -17,6 +23,12 @@ const routes: RouteConfig[] = [
         name: PAGE_POEM,
         path: 'poem/:id',
         component: () => import('pages/Poem.vue'),
+      },
+      {
+        name: PAGE_EDIT,
+        path: 'poem/:id/edit',
+        component: () => import('pages/Write.vue'),
+        props: true,
       },
     ],
   },

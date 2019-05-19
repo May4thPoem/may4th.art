@@ -42,6 +42,8 @@ export default ({Vue, app}) => {
         },
         isLoggedIn,
       },
+      myPoems: [],
+      allPublicPoems: [],
     },
   }
 

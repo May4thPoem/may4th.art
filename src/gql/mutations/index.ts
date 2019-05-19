@@ -9,11 +9,13 @@ export const postPoemMutation = gql`
     postPoem(newPoem: {title: $title, content: $content, isPublic: $isPublic}) {
       id
       author {
+        id
         name
       }
       content
       title
       createdAt
+      updatedAt
       isPublic
     }
   }
@@ -66,5 +68,22 @@ export const signUpMutation = gql`
 export const deletePoemMutation = gql`
   mutation deletePoemMutation($id: String!) {
     deletePoem(id: $id)
+  }
+`
+
+export const updatePoemMutation = gql`
+  mutation updatePoemMutation($id: String!, $newPoem: CreatePoemInput!) {
+    updatePoem(id: $id, newPoem: $newPoem) {
+      id
+      author {
+        id
+        name
+      }
+      content
+      title
+      createdAt
+      updatedAt
+      isPublic
+    }
   }
 `

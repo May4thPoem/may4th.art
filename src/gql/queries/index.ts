@@ -5,11 +5,14 @@ export const allPublicPoemsQuery = gql`
     allPublicPoems {
       id
       author {
+        id
         name
       }
       title
       content
       createdAt
+      updatedAt
+      isPublic
     }
   }
 `
@@ -18,6 +21,10 @@ export const myPoemsQuery = gql`
   query myPoemsQuery {
     myPoems {
       id
+      author {
+        id
+        name
+      }
       title
       content
       createdAt
@@ -30,13 +37,16 @@ export const myPoemsQuery = gql`
 export const poemQuery = gql`
   query poemQuery($id: String!) {
     poem(id: $id) {
+      id
       author {
+        id
         name
       }
       title
       content
       createdAt
       updatedAt
+      isPublic
     }
   }
 `

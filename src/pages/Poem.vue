@@ -6,15 +6,18 @@
         <div class="q-pa-md">
           <q-card>
             <p class="poem-time">
-              <strong>{{ relativeTime(poem.createdAt) }}</strong>
+              <strong>{{ relativeTime(data.poem.createdAt) }}</strong>
             </p>
             <h3 class="poem-title">
-              {{ poem.title }}
+              {{ data.poem.title }}
             </h3>
             <p style="padding-left: 10px;">
-              <strong>Author: {{ poem.author.name }}</strong>
+              <strong>Author: {{ data.poem.author.name }}</strong>
             </p>
-            <p class="poem-content" v-html="sanitize(poem.content)" />
+            <p class="poem-content" v-html="sanitize(data.poem.content)" />
+            <p v-if="session.user.id === data.poem.author.id" class="poem-edit">
+              <q-btn color="primary" @click="editPoem(data.poem)">编辑</q-btn>
+            </p>
           </q-card>
         </div>
       </div>
@@ -25,28 +28,30 @@
   </ApolloQuery>
 </template>
 <script lang="ts">
+import {PAGE_EDIT} from '../common/constants'
+import {Poem} from '../common/types'
 import {sanitize, relativeTime} from '../common/utils'
-import {poemQuery} from '../gql/queries'
+import {poemQuery, sessionQuery} from '../gql/queries'
 
 import Vue from 'vue'
 
 export default Vue.extend({
   name: 'PagePoem',
   apollo: {
-    poem: {
-      query: poemQuery,
-      variables() {
-        return {
-          id: this.id,
-        }
-      },
-      fetchPolicy: 'cache-and-network',
+    session: {
+      query: sessionQuery,
+      fetchPolicy: 'cache-only',
     },
   },
   data() {
     return {
       poemQuery,
       poem: {},
+      session: {
+        user: {
+          id: '0',
+        },
+      },
     }
   },
   computed: {
@@ -59,6 +64,18 @@ export default Vue.extend({
     sanitize,
     navTo(path: string) {
       this.$router.push(path)
+    },
+    editPoem(poem: Poem) {
+      if (this.session.user.id !== poem.author.id) return
+      this.$router.push({
+        name: PAGE_EDIT,
+        params: {
+          id: poem.id,
+          title: poem.title,
+          content: poem.content,
+          isPublic: JSON.stringify(poem.isPublic),
+        },
+      })
     },
   },
 })

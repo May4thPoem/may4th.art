@@ -9,7 +9,9 @@
     >
       <template v-slot:body="props">
         <q-tr :props="props">
-          <q-td key="title" :props="props">{{ props.row.title }}</q-td>
+          <q-td key="title" :props="props">
+            <div @click="viewPoem(props.row)">{{ props.row.title }}</div>
+          </q-td>
           <q-td key="isPublic" :props="props">{{
             props.row.isPublic ? '是' : '否'
           }}</q-td>
@@ -20,7 +22,7 @@
             relativeTime(props.row.updatedAt)
           }}</q-td>
           <q-td auto-width>
-            <q-btn color="primary" @click="editPoem">
+            <q-btn color="primary" @click="editPoem(props.row)">
               <q-icon name="edit" color="white" />
             </q-btn>
           </q-td>
@@ -40,6 +42,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import {PAGE_EDIT, PAGE_POEM} from '../common/constants'
 import {relativeTime} from '../common/utils'
 import {Poem, MyPoemsQuery} from '../common/types'
 import {myPoemsQuery} from '../gql/queries'
@@ -96,7 +99,25 @@ export default Vue.extend({
   },
   methods: {
     relativeTime,
-    editPoem() {},
+    viewPoem(poem: Poem) {
+      console.log(poem)
+      if (poem.isPublic) {
+        this.$router.push({name: PAGE_POEM, params: {id: poem.id}})
+      } else {
+        this.editPoem(poem)
+      }
+    },
+    editPoem(poem: Poem) {
+      this.$router.push({
+        name: PAGE_EDIT,
+        params: {
+          id: poem.id,
+          title: poem.title,
+          content: poem.content,
+          isPublic: JSON.stringify(poem.isPublic),
+        },
+      })
+    },
     deletePoem(id: string) {
       this.$apollo
         .mutate({
