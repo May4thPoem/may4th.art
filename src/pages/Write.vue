@@ -110,7 +110,7 @@ export default Vue.extend({
                 const idx = data.allPublicPoems.findIndex(
                   poem => poem.id === id,
                 )
-                if (idx === -1) {
+                if (idx !== -1) {
                   data.allPublicPoems[idx] = updatePoem
                 } else {
                   data.allPublicPoems.push(updatePoem)
