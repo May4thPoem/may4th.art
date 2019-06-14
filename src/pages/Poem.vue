@@ -1,7 +1,12 @@
 <template>
   <ApolloQuery :query="poemQuery" :variables="{id}">
-    <template v-slot="{result: {loading, error, data}}">
-      <div v-if="loading">Loading...</div>
+    <template v-slot="{result: {error, data}, isLoading}">
+      <div v-if="isLoading">
+        <p style="text-align: center;">
+          加载中
+          <q-spinner-dots />
+        </p>
+      </div>
       <div v-else-if="data">
         <div class="q-pa-md">
           <q-card>

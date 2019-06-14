@@ -59,7 +59,11 @@ module.exports = function(ctx) {
       directives: ['Ripple'],
 
       // Quasar plugins
-      plugins: ['Notify'],
+      plugins: ['Notify', 'Loading'],
+
+      config: {
+        loading: {},
+      },
 
       // iconSet: 'ionicons-v4'
       // lang: 'de' // Quasar language
