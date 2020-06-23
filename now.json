@@ -10,46 +10,5 @@
         "distDir": "dist/spa"
       }
     }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=31536000,immutable"
-      },
-      "dest": "/$1"
-    },
-    {
-      "src": "/js/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=31536000,immutable"
-      },
-      "dest": "/js/$1"
-    },
-    {
-      "src": "/css/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=31536000,immutable"
-      },
-      "dest": "/css/$1"
-    },
-    {
-      "src": "/fonts/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=31536000,immutable"
-      },
-      "dest": "/fonts/$1"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
-      "src": "/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "/index.html"
-    }
   ]
 }
