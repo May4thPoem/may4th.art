@@ -2,14 +2,12 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-toolbar-title aria-label="Go to home page" @click="navTo('/')">
-          May4th Poem
-        </q-toolbar-title>
-
+        <q-toolbar-title aria-label="Go to home page" @click="navTo('/')"
+          >May4th Poem</q-toolbar-title
+        >
         <div v-if="!session.isLoggedIn">
           <q-btn flat>
-            <q-icon name="input" color="white" />
-            登录
+            <q-icon name="input" color="white" />登录
             <q-popup-proxy>
               <div class="col" style="padding: 10px;">
                 <div class="row items-center">
@@ -59,8 +57,7 @@
             </q-popup-proxy>
           </q-btn>
           <q-btn flat>
-            <q-icon name="person_pin" color="white" />
-            注册
+            <q-icon name="person_pin" color="white" />注册
             <q-popup-proxy>
               <div class="col" style="padding: 10px;">
                 <div class="row items-center">
@@ -133,30 +130,28 @@
           </q-btn>
         </div>
         <div v-else class="flex">
-          <q-btn flat @click="navTo('/my')">{{
-            $q.platform.is.mobile
-              ? '我的'
-              : `欢迎来到May4th，${session.user.name}`
-          }}</q-btn>
+          <q-btn flat @click="navTo('/my')">
+            {{
+              $q.platform.is.mobile
+                ? '我的'
+                : `欢迎来到May4th，${session.user.name}`
+            }}
+          </q-btn>
           <q-btn flat @click="navTo('/poem/new')">
-            <q-icon name="note_add" color="white" />
-            写诗
+            <q-icon name="note_add" color="white" />写诗
           </q-btn>
           <q-btn flat @click="logOut">
-            <q-icon name="exit_to_app" color="white" />
-            退出
+            <q-icon name="exit_to_app" color="white" />退出
           </q-btn>
         </div>
       </q-toolbar>
     </q-header>
-
     <q-page-container>
       <router-view />
     </q-page-container>
-
     <q-footer>
       <q-toolbar style="justify-content: center;">
-        <div>洗心革面的未来生活 | May4th Poem © 2019</div>
+        <div>洗心革面的未来生活 | May4th Poem © 1956-2020</div>
       </q-toolbar>
     </q-footer>
   </q-layout>
@@ -305,25 +300,29 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus">
-.poem-title
-  font-size 1.5rem
-  line-height 2rem
-  padding-left 10px
-  padding-right 10px
-  text-align center
-  text-overflow ellipsis
+.poem-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+  text-overflow: ellipsis;
+}
 
-.poem-time
-  text-align right
-  padding-top 10px
-  padding-right 10px
+.poem-time {
+  text-align: right;
+  padding-top: 10px;
+  padding-right: 10px;
+}
 
-.poem-content
-  padding 10px
-  max-height 300px
+.poem-content {
+  padding: 10px;
+  max-height: 300px;
+}
 
-.poem-edit
-  text-align right
-  padding-bottom 10px
-  padding-right 10px
+.poem-edit {
+  text-align: right;
+  padding-bottom: 10px;
+  padding-right: 10px;
+}
 </style>

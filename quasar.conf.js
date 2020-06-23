@@ -1,6 +1,6 @@
 // Configuration for your app
 
-module.exports = function(ctx) {
+module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -18,45 +18,7 @@ module.exports = function(ctx) {
     ],
 
     framework: {
-      // all: true, // --- includes everything; for dev only!
-
-      components: [
-        'QLayout',
-        'QHeader',
-        'QFooter',
-        'QDrawer',
-        'QPageContainer',
-        'QPage',
-        'QPageSticky',
-        'QPageScroller',
-        'QToolbar',
-        'QToolbarTitle',
-        'QBtn',
-        'QIcon',
-        'QList',
-        'QItem',
-        'QItemSection',
-        'QItemLabel',
-        'QPopupEdit',
-        'QPopupProxy',
-        'QInput',
-        'QMenu',
-        'QDialog',
-        'QBanner',
-        'QEditor',
-        'QForm',
-        'QToggle',
-        'QCard',
-        'QTable',
-        'QTr',
-        'QTd',
-        'QParallax',
-        'QPullToRefresh',
-        'QInfiniteScroll',
-        'QSpinnerDots',
-      ],
-
-      directives: ['Ripple'],
+      importStrategy: 'auto',
 
       // Quasar plugins
       plugins: ['Notify', 'Loading'],
@@ -69,18 +31,16 @@ module.exports = function(ctx) {
       // lang: 'de' // Quasar language
     },
 
-    supportIE: true,
+    supportTS: true,
 
     build: {
       scopeHoisting: true,
       vueRouterMode: 'history',
-      env: ctx.dev
-        ? {
-            API_ENDPOINT: JSON.stringify('http://localhost:3000/graphql'),
-          }
-        : {
-            API_ENDPOINT: JSON.stringify('https://nest.may4th.art/graphql'),
-          },
+      env: ctx.dev ? {
+        API_ENDPOINT: 'http://localhost:3000/graphql',
+      } : {
+        API_ENDPOINT: 'https://nest.may4th.art/graphql',
+      },
       // vueCompiler: true,
       gzip: false,
       // analyze: true,
@@ -119,29 +79,28 @@ module.exports = function(ctx) {
         orientation: 'portrait',
         background_color: '#ffffff',
         theme_color: '#027be3',
-        icons: [
-          {
-            src: 'statics/icons/icon-128x128.png',
+        icons: [{
+            src: 'icons/icon-128x128.png',
             sizes: '128x128',
             type: 'image/png',
           },
           {
-            src: 'statics/icons/icon-192x192.png',
+            src: 'icons/icon-192x192.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: 'statics/icons/icon-256x256.png',
+            src: 'icons/icon-256x256.png',
             sizes: '256x256',
             type: 'image/png',
           },
           {
-            src: 'statics/icons/icon-384x384.png',
+            src: 'icons/icon-384x384.png',
             sizes: '384x384',
             type: 'image/png',
           },
           {
-            src: 'statics/icons/icon-512x512.png',
+            src: 'icons/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
           },

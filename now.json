@@ -6,34 +6,49 @@
     {
       "src": "package.json",
       "use": "@now/static-build",
-      "config": {"distDir": "dist/spa"}
+      "config": {
+        "distDir": "dist/spa"
+      }
     }
   ],
   "routes": [
     {
-      "src": "/statics/(.*)",
-      "headers": {"cache-control": "s-maxage=31536000,immutable"},
-      "dest": "/statics/$1"
+      "src": "/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
+      "dest": "/$1"
     },
     {
       "src": "/js/(.*)",
-      "headers": {"cache-control": "s-maxage=31536000,immutable"},
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
       "dest": "/js/$1"
     },
     {
       "src": "/css/(.*)",
-      "headers": {"cache-control": "s-maxage=31536000,immutable"},
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
       "dest": "/css/$1"
     },
     {
       "src": "/fonts/(.*)",
-      "headers": {"cache-control": "s-maxage=31536000,immutable"},
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
       "dest": "/fonts/$1"
     },
-    {"src": "/favicon.ico", "dest": "/favicon.ico"},
+    {
+      "src": "/favicon.ico",
+      "dest": "/favicon.ico"
+    },
     {
       "src": "/(.*)",
-      "headers": {"cache-control": "s-maxage=0"},
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
       "dest": "/index.html"
     }
   ]
