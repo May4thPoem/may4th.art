@@ -19,7 +19,7 @@
     "apollo-link-context": "^1.0.20",
     "axios": "^0.19.2",
     "dompurify": "^2.0.11",
-    "gsap": "^3.3.4",
+    "gsap": "^3.6.0",
     "moment": "^2.27.0",
     "quasar": "^1.12.7"
   },
